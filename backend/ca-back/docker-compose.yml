@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: binance-api
+
+  ca-back:
+    image: "${REPOSITORY_URI}:${IMAGE_TAG}"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: "${DB_HOST}"
+      DB_PORT: "${DB_PORT}"
+      DB_SCHEMA: "${DB_SCHEMA}"
+      DB_USERNAME: "${DB_USER}"
+      DB_PASSWORD: "${DB_PASS}"
+    restart: always
